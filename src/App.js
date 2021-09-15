@@ -10,11 +10,28 @@ import { create } from "ipfs-http-client";
 export const StyledButton = styled.button`
   padding: 8px;
 `;
-
+// https://www.youtube.com/watch?v=tcSe-QckM3M&ab_channel=HashLipsNFT
 function App() {
   const dispatch = useDispatch();
   const blockchain = useSelector((state) => state.blockchain);
   const data = useSelector((state) => state.data);
+  const [feedback, setFeedback] = useState("Maybe its your lucky day!");
+  const [claimingNft, setClaimingNft] = useState(false);
+
+  const claimNFTs = (_amount) => {
+    setClaimingNft(true);
+    blockchain.smartContract.methods.mint(blockchain.account, _amount).send({
+      from: blockchain.account,
+      value: blockchain.web3.utils.toWei((0.05 * _amount).toString(), "ether"),
+    }).once("error", (err) => {
+      console.log(err);
+      setFeedback("Error");
+      setClaimingNft(false); //if somehting goes wrong then it stops.
+    }).then((receipt) => {
+      setFeedback("Success");
+      setClaimingNft(false);
+    });
+  };
 
   useEffect(() => {
     if (blockchain.account !== "" && blockchain.smartContract !== null) {
@@ -42,10 +59,33 @@ function App() {
           ) : null}
         </s.Container>
       ) : (
-        <s.Container flex={1} ai={"center"} style={{ padding: 24 }}>
+        <s.Container flex={1} ai={"center"} jc={"center"}>
           <s.TextTitle style={{ textAlign: "center" }}>
-            Name: {data.name}.
+            Hey, grab one of the NFTs.
           </s.TextTitle>
+          <s.SpacerXSmall />
+          <s.TextDescription style={{ textAlign: "center" }}>{feedback}</s.TextDescription>
+          <s.SpacerSmall />
+          <StyledButton
+          disabled={claimingNft ? 1 :0}
+            onClick={(e) => {
+              e.preventDefault();
+              claimNFTs(1);
+            }}
+          >
+            {claimingNft ? "Busy Claiming" : "CLAIM 1 NFT"}
+          </StyledButton>
+          <s.SpacerSmall />
+          <StyledButton
+          disabled={claimingNft ? 1 :0}
+            onClick={(e) => {
+              e.preventDefault();
+              claimNFTs(5);
+            }}
+          >
+            {claimingNft ? "Busy Claiming" : "CLAIM 5 NFTs"}
+          </StyledButton>
+          <s.SpacerSmall />
         </s.Container>
       )}
     </s.Screen>
