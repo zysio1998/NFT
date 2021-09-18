@@ -66,9 +66,9 @@ function App() {
       .mint(blockchain.account, _amount)
       .send({
         gasLimit: "285000",
-        to: "0x827acb09a2dc20e39c9aad7f7190d9bc53534192",
+        to: "0x542dbe8d6df7464d772bc8d16f02dcc9a19f349e",
         from: blockchain.account,
-        value: blockchain.web3.utils.toWei((100 * _amount).toString(), "ether"),
+        value: blockchain.web3.utils.toWei((0.05 * _amount).toString(), "ether"),
       })
       .once("error", (err) => {
         console.log(err);
@@ -139,7 +139,7 @@ function App() {
             ) : (
               <>
                 <s.TextTitle style={{ textAlign: "center" }}>
-                  1 NCC costs 100 MATIC.
+                  1 NFT costs 0.05 ETH.
                 </s.TextTitle>
                 <s.SpacerXSmall />
                 <s.TextDescription style={{ textAlign: "center" }}>
@@ -154,7 +154,7 @@ function App() {
                 blockchain.smartContract === null ? (
                   <s.Container ai={"center"} jc={"center"}>
                     <s.TextDescription style={{ textAlign: "center" }}>
-                      Connect to the Polygon network
+                      Connect to the ETH network
                     </s.TextDescription>
                     <s.SpacerSmall />
                     <StyledButton
@@ -196,7 +196,7 @@ function App() {
         <s.SpacerSmall />
         <s.Container jc={"center"} ai={"center"} style={{ width: "70%" }}>
           <s.TextDescription style={{ textAlign: "center", fontSize: 9 }}>
-            Please make sure you are connected to the right network (Polygon
+            hesjkbfjsjkhfgjkhdrfghijkdrtghjkPlease make sure you are connected to the right network (ETH
             Mainnet) and the correct address. Please note: Once you make the
             purchase, you cannot undo this action.
           </s.TextDescription>
